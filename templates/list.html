@@ -1,0 +1,6 @@
+<h1>Page - list</h1>
+<ul>
+{{ range $val := . }}
+  <li><a href="view/{{$val}}">{{$val}}</a></li>
+{{end}}
+</ul>
