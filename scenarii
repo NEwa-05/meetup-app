@@ -1,0 +1,107 @@
+##### minikube prez #####
+
+minikube profile list
+
+minikube start -p meetup --vm-driver kvm2
+ 
+k get no 
+
+k describe no
+ 
+minikube -p meetup addons list
+
+minikube -p meetup addons enable ingress 
+
+minikube -p meetup addons enable metrics-server
+
+minikube -p meetup addons list
+
+k top no
+
+k get po -n kube-system -w
+ 
+minikube stop -p meetup
+ 
+minikube start -p meetup2 --container-runtime=containerd --vm-driver kvm2 --kubernetes-version v1.18.0 --addons=gvisor --network-plugin=cni --cpus=4 --memory=8g
+
+kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.6/install/kubernetes/quick-install.yaml
+
+k get no
+
+k get po -n kube-system
+
+minikube profile list
+
+minikube ssh -p meetup2
+
+lscpu 
+
+free -m
+
+minikube stop -p meetup2
+
+minikube delete -p meetup2
+
+minikube start -p meetup3 -n 2 --vm-driver kvm2
+
+k get no
+
+minikube stop -p meetup3
+
+minikube delete -p meetup3
+
+minikube start -p meetup
+
+minikube start -h 
+
+>> vm-driver
+
+k get sc
+
+>> mount host folder
+
+>> minikube possible deriere proxy
+
+>> minikube can be a private registry
+
+minikube ip
+
+
+##### inside minikube prez #####
+
+k apply -f deploy-wiki.yml
+
+# check objects 
+
+k get po
+ 
+k get svc 
+
+k get ing
+
+# build image to minikube docker env
+
+eval $(minikube -p meetup docker-env)
+
+# build it in minikube 
+
+docker build -t wiki:v2 .
+
+# deploy your app to minikube k8s
+
+k apply -f deploy-wiki.yml
+
+# check objects 
+
+k get po
+
+# check via browser
+
+minikube -p meetup ip
+
+## use skaffold to build directly in minikube
+
+skaffold init
+
+skaffold dev
+
