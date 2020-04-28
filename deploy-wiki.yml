@@ -1,0 +1,44 @@
+---  
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wiki
+  labels:
+    app: wiki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wiki
+  template:
+    metadata:
+      labels:
+        app: wiki
+    spec:
+      containers:
+        - image: newa/wiki
+          name: wiki
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wiki-svc
+spec:
+  selector:
+    app: wiki
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: wiki-ing
+spec:
+  rules:
+    - http:
+        paths:
+        - backend:
+            serviceName: wiki-svc
+            servicePort: 8080

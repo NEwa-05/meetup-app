@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"strings"
 )
 
 // Page structure
@@ -15,7 +16,7 @@ type Page struct {
 	Body  []byte
 }
 
-var templates = template.Must(template.ParseFiles("templates/edit.html", "templates/view.html"))
+var templates = template.Must(template.ParseFiles("templates/edit.html", "templates/view.html", "templates/list.html"))
 
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
 
@@ -88,9 +89,25 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/view/"+title, http.StatusFound)
 }
 
+func listHandler(w http.ResponseWriter, r *http.Request) {
+	list, err := ioutil.ReadDir("pages")
+	if err != nil {
+		log.Fatal(err)
+	}
+	var files []string
+	for _, file := range list {
+		files = append(files, strings.TrimSuffix(file.Name(), ".txt"))
+	}
+	err = templates.ExecuteTemplate(w, "list.html", files)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 func main() {
 	http.HandleFunc("/view/", viewHandler)
 	http.HandleFunc("/edit/", editHandler)
 	http.HandleFunc("/save/", saveHandler)
+	http.HandleFunc("/", listHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

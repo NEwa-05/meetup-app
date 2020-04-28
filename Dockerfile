@@ -17,3 +17,5 @@ COPY --from=builder /templates/ ./templates/
 COPY --from=builder /pages/ ./pages/
 
 CMD ["./wiki"]
+
+EXPOSE 8080
