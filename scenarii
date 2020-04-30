@@ -85,7 +85,7 @@ eval $(minikube -p meetup docker-env)
 
 # build it in minikube 
 
-docker build -t wiki:v2 .
+docker build -t wiki:v1 .
 
 # deploy your app to minikube k8s
 
